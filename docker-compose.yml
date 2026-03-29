@@ -1,0 +1,18 @@
+services:
+  ogame-agent:
+    build: .
+    container_name: ogame-agi
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DEBUG=${DEBUG:-false}
+      - HEADLESS=${HEADLESS:-true}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - ogame-net
+
+networks:
+  ogame-net:
+    driver: bridge
