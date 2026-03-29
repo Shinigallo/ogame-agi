@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
-from agents.gemini_brain import GeminiBrain
+from agents.enhanced_gemini_brain import EnhancedGeminiBrain
 from automation.playwright_interface import PlaywrightInterface
 from strategy.strategic_planner import StrategicPlanner
 from vision.game_parser import GameParser
@@ -22,7 +22,7 @@ class OGameAGI:
         self.setup_logging()
         
         # Initialize components
-        self.brain = GeminiBrain()
+        self.brain = EnhancedGeminiBrain()
         self.browser = PlaywrightInterface()
         self.parser = GameParser()
         self.planner = StrategicPlanner(self.brain)
