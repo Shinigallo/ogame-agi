@@ -1,60 +1,9 @@
-# Add environment and credential files
+# Environment files (contain credentials)
 .env
-.env.local
-.env.production
-.env.test
-*.env
+.env.*
+!.env.example
 
-# API keys and credentials
-api_keys.txt
-credentials.json
-secrets/
-
-# Logs and temporary files
-logs/
-*.log
-temp/
-tmp/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -63,21 +12,47 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Docker
-.docker/
-docker-compose.override.yml
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
 
-# Browser automation
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Bot data and logs
+data/
+logs/
+sessions/
 screenshots/
-downloads/
-browser_cache/
+*.log
 
-# Test data
-test_accounts.txt
-test_credentials.*
+# Docker
+.dockerignore
 
-# Personal notes and local files
-NOTES.md
-TODO.md
-personal/
-local/
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp

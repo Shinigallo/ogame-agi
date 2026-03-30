@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  ogame-smart-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.smart
+    container_name: ogame-smart-bot
+    restart: unless-stopped
+    
+    environment:
+      # OGame Credentials
+      - OGAME_USERNAME=${OGAME_USERNAME}
+      - OGAME_PASSWORD=${OGAME_PASSWORD}
+      - OGAME_UNIVERSE_URL=${OGAME_UNIVERSE_URL}
+      
+      # AI Configuration (minimal usage)
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      
+      # Smart Bot Configuration
+      - QUICK_CHECK_INTERVAL=${QUICK_CHECK_INTERVAL:-60}      # Quick checks every 1min
+      - AI_DECISION_INTERVAL=${AI_DECISION_INTERVAL:-1800}    # AI decisions every 30min 
+      - MAX_SESSION_TIME=${MAX_SESSION_TIME:-3600}            # Max 1h sessions
+      - STRATEGIC_MODE=${STRATEGIC_MODE:-balanced}
+      
+      # Resource Thresholds (triggers)
+      - METAL_THRESHOLD=${METAL_THRESHOLD:-50000}
+      - CRYSTAL_THRESHOLD=${CRYSTAL_THRESHOLD:-25000}
+      - DEUTERIUM_THRESHOLD=${DEUTERIUM_THRESHOLD:-12500}
+      
+      # Browser Settings
+      - HEADLESS=true
+      - BROWSER_PATH=/usr/bin/google-chrome
+      
+      # OpenClaw Integration
+      - OPENCLAW_GATEWAY_URL=${OPENCLAW_GATEWAY_URL:-http://host.docker.internal:3000}
+      - OPENCLAW_SESSION_KEY=${OPENCLAW_SESSION_KEY}
+      
+      # Safety
+      - AUTO_FLEETSAVE=true
+      - RISK_TOLERANCE=low
+      - SESSION_BREAK_MIN=600                                 # 10min breaks
+      - SESSION_BREAK_MAX=1800                                # 30min breaks
+    
+    volumes:
+      # Persistent data
+      - ./data:/app/data
+      - ./logs:/app/logs
+      
+      # Session persistence  
+      - smart-bot-sessions:/app/sessions
+    
+    networks:
+      - ogame-smart-net
+    
+    # Resource limits (much lower than full bot)
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.2'
+
+  # Optional: Lightweight monitoring
+  smart-bot-monitor:
+    image: nginx:alpine
+    container_name: smart-bot-monitor
+    ports:
+      - "8080:80"
+    volumes:
+      - ./logs:/usr/share/nginx/html/logs:ro
+      - ./data:/usr/share/nginx/html/data:ro
+      - ./monitoring/nginx-smart.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ogame-smart-bot
+    networks:
+      - ogame-smart-net
+
+volumes:
+  smart-bot-sessions:
+
+networks:
+  ogame-smart-net:
+    driver: bridge

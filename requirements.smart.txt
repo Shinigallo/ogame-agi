@@ -1,0 +1,19 @@
+# Minimal requirements for Smart Bot (token-efficient)
+
+# Core automation
+playwright==1.47.0
+python-dotenv==1.0.0
+
+# AI (minimal usage)
+google-generativeai>=0.3.0
+
+# Data handling
+dataclasses-json==0.6.1
+
+# Utilities
+requests==2.31.0
+click==8.1.7
+
+# Optional monitoring
+fastapi==0.104.1
+uvicorn==0.24.0

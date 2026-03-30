@@ -1,0 +1,47 @@
+# Smart OGame Bot - Dockerfile (Lightweight)
+
+FROM python:3.11-slim
+
+# Install minimal system dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Chrome (lightweight)
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements
+COPY requirements.smart.txt requirements.txt
+
+# Install Python dependencies (minimal set)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Playwright browsers (minimal)
+RUN playwright install chromium --with-deps
+
+# Copy application code
+COPY src/ ./src/
+COPY knowledge/ ./knowledge/
+
+# Create directories
+RUN mkdir -p data logs sessions
+
+# Set environment
+ENV PYTHONPATH=/app
+ENV HEADLESS=true
+
+# Health check (lightweight)
+HEALTHCHECK --interval=300s --timeout=10s --start-period=60s --retries=2 \
+    CMD test -f /app/data/bot_state.json || exit 1
+
+# Default command
+CMD ["python", "src/smart_ogame_bot.py"]
