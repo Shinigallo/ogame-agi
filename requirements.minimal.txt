@@ -1,0 +1,32 @@
+# Minimal requirements for OGame AGI MVP
+# Focus on core functionality without heavy dependencies
+
+# Core AI/Automation
+playwright==1.47.0
+google-generativeai==0.8.3
+
+# Web scraping and requests
+requests==2.32.3
+beautifulsoup4==4.12.3
+
+# Basic data handling (no heavy ML libs)
+# numpy==1.26.4  # Removed for now
+# pandas==2.2.3  # Removed for now
+# opencv-python==4.10.0.84  # Removed for now
+# pillow==10.4.0  # Removed for now
+
+# Async support
+asyncio==3.4.3
+aiohttp==3.10.5
+
+# Configuration
+python-dotenv==1.0.1
+pydantic==2.9.2
+
+# Logging and utilities
+loguru==0.7.2
+rich==13.8.1
+
+# Testing (optional for MVP)
+# pytest==8.3.3
+# pytest-asyncio==0.24.0

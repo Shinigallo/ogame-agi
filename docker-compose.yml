@@ -1,18 +1,30 @@
+version: '3.8'
+
 services:
   ogame-agent:
-    build: .
-    container_name: ogame-agi
+    build:
+      context: .
+      dockerfile: Dockerfile.minimal
+    container_name: ogame-agi-minimal
     environment:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - DEBUG=${DEBUG:-false}
+      - OGAME_USERNAME=${OGAME_USERNAME}  
+      - OGAME_PASSWORD=${OGAME_PASSWORD}
+      - OGAME_UNIVERSE_URL=${OGAME_UNIVERSE_URL}
+      - OGAME_UNIVERSE=${OGAME_UNIVERSE}
+      - DEBUG=${DEBUG:-true}
       - HEADLESS=${HEADLESS:-true}
+      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+      - RISK_TOLERANCE=${RISK_TOLERANCE:-low}
+      - STRATEGY_FOCUS=${STRATEGY_FOCUS:-balanced}
+      - GAME_PHASE=${GAME_PHASE:-early}
     volumes:
       - ./logs:/app/logs
       - ./data:/app/data
     restart: unless-stopped
     networks:
-      - ogame-net
+      - ogame-network
 
 networks:
-  ogame-net:
+  ogame-network:
     driver: bridge

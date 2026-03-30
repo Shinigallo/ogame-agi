@@ -8,7 +8,7 @@ import json
 import logging
 from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
-import numpy as np
+# import numpy as np  # Commented for minimal build
 from dataclasses import dataclass
 
 # For future implementation - would need embedding models
@@ -240,6 +240,6 @@ class OGameRAG:
         return {
             'total_documents': len(self.documents),
             'categories': category_counts,
-            'avg_priority': np.mean([doc.priority for doc in self.documents]) if self.documents else 0,
+            'avg_priority': sum(doc.priority for doc in self.documents) / len(self.documents) if self.documents else 0,
             'total_tags': len(set(tag for doc in self.documents for tag in doc.tags))
         }
