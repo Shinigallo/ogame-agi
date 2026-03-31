@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  ogame-login-vnc:
+    image: dorowu/ubuntu-desktop-lxde-vnc:latest
+    container_name: ogame-login-helper
+    ports:
+      - "6080:80"  # noVNC web interface
+      - "5900:5900"  # VNC port
+    environment:
+      - VNC_PASSWORD=ogame123
+      - RESOLUTION=1920x1080
+    volumes:
+      - /home/dario/ogame-agi:/workspace
+    restart: "no"
